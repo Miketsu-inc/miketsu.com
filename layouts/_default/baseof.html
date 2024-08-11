@@ -5,13 +5,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ .Site.Title }}</title>
-    <link rel="stylesheet" href="/dist/output.css" />
+    {{ $styles := resources.Get "styles/output.css" | minify | fingerprint |
+    resources.PostProcess }}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ $styles.RelPermalink }}"
+      integrity="{{ $styles.Data.Integrity }}"
+    />
   </head>
-  <body>
+  <body class="bg-black text-white">
     <!-- Code that all your templates share, like a header -->
     {{ block "main" . }} {{ end }}
     <!-- The part of the page that begins to differ between templates -->
-    <!-- {{ block "footer" . }} {{ end }} -->
+    {{ partial "footer.html" . }}
     <!-- More shared code, perhaps a footer but that can be overridden if need be in  -->
   </body>
 </html>
